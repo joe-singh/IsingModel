@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/joesingh/Desktop/Statmech/Project/Ising/Lattice.h
+vector
+-
+tuple
+-
+
+/Users/joesingh/Desktop/Statmech/Project/Ising/Lattice2D.h
+Lattice.h
+/Users/joesingh/Desktop/Statmech/Project/Ising/Lattice.h
+tuple
+-
+array
+-
+
+/Users/joesingh/Desktop/Statmech/Project/Ising/main.cpp
+iostream
+-
+Lattice2D.h
+/Users/joesingh/Desktop/Statmech/Project/Ising/Lattice2D.h
+

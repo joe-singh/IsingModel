@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Ising"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ising">
+				<Option output="/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Ising" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ising"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ising/fast">
+				<Option output="/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Ising" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ising/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/joesingh/Desktop/Statmech/Project/Ising/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/joesingh/Desktop/Statmech/Project/Ising/Lattice2D.cpp">
+			<Option target="Ising"/>
+		</Unit>
+		<Unit filename="/Users/joesingh/Desktop/Statmech/Project/Ising/Lattice2D.h">
+			<Option target="Ising"/>
+		</Unit>
+		<Unit filename="/Users/joesingh/Desktop/Statmech/Project/Ising/lattice.cpp">
+			<Option target="Ising"/>
+		</Unit>
+		<Unit filename="/Users/joesingh/Desktop/Statmech/Project/Ising/lattice.h">
+			<Option target="Ising"/>
+		</Unit>
+		<Unit filename="/Users/joesingh/Desktop/Statmech/Project/Ising/main.cpp">
+			<Option target="Ising"/>
+		</Unit>
+		<Unit filename="/Users/joesingh/Desktop/Statmech/Project/Ising/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

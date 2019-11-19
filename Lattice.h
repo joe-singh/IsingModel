@@ -18,6 +18,7 @@ protected:
     virtual void display() {}
     virtual bool isValidCoord() {}
     virtual void Wolff(double J, double b) {}
+    virtual double magnetisation() {}
     int _latSize;
     std::vector<std::vector<int>> _lat;
     int GARBAGE = -420;

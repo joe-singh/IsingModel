@@ -5,7 +5,7 @@
 #include "Lattice.h"
 #include <tuple>
 #include <array>
-
+#include <utility>
 #ifndef ISING_LATTICE2D_H
 #define ISING_LATTICE2D_H
 
@@ -16,9 +16,10 @@ public:
     int getSite(int x, int y);
     void flipSite(int x, int y);
     void display() override;
-    bool isValidCoord(std::array<int, 2> coord);
+    bool isValidCoord(std::pair<int, int> coord);
     void Wolff(double J, double b) override;
-    std::vector<std::array<int, 2>> getNeighbours(int x, int y);
+    double magnetisation() override;
+    std::vector<std::pair<int, int>> getNeighbours(int x, int y);
 };
 
 

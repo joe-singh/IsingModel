@@ -7,6 +7,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <set>
+#include <unordered_set>
 #include <cmath>
 #include <random>
 
@@ -39,33 +40,40 @@ void Lattice2D::display() {
     std::cout << "\n\n";
 }
 
+struct pair_hash {
+    inline std::size_t operator()(const std::pair<int,int> & v) const {
+        return v.first*31+v.second;
+    }
+};
+
 void Lattice2D::Wolff(double J, double b) {
     srand(time(0));
     int randX = rand() % _latSize;
     int randY = rand() % _latSize;
     std::array<int, 2> randomPoint = {randX, randY};
 
-    std::set<std::array<int, 2>> cluster;
-    std::set<std::array<int, 2>> frontier;
+    std::unordered_set<std::pair<int, int>, pair_hash> cluster;
+    //std::set<std::array<int, 2>> cluster;
+    //std::set<std::array<int, 2>> frontier;
+    std::unordered_set<std::pair<int, int>, pair_hash> frontier;
     cluster.insert(randomPoint);
     frontier.insert(randomPoint);
 
     double p = 1 - exp(-2*b*J);
 
     while (!frontier.empty()) {
-        std::set<std::array<int, 2>> newFrontier;
-        std::set<std::array<int , 2>>::iterator it;
-        for (it = frontier.begin(); it != frontier.end(); ++it) {
-            std::array<int, 2> point = *it;
-            int x = point[0];
-            int y = point[1];
+        std::unordered_set<std::pair<int, int>, pair_hash> newFrontier;
+        //std::set<std::array<int , 2>>::iterator it;
+        for (auto point : frontier) {
+            int x = point.first;
+            int y = point.second;
             int siteSpin = getSite(x, y);
 
-            std::vector<std::array<int, 2>> neighbours = getNeighbours(x, y);
+            std::vector<std::pair<int, int>> neighbours = getNeighbours(x, y);
             for (auto neighbour : neighbours) {
                 if (!isValidCoord(neighbour)) continue;
-                int neighbourX = neighbour[0];
-                int neighbourY = neighbour[1];
+                int neighbourX = neighbour.first;
+                int neighbourY = neighbour.second;
                 int neighbourSpin = getSite(neighbourX, neighbourY);
 
                 auto iter = cluster.find(neighbour);
@@ -87,72 +95,55 @@ void Lattice2D::Wolff(double J, double b) {
     }
 
     for (auto site : cluster) {
-        int x = site[0];
-        int y = site[1];
+        int x = site.first;
+        int y = site.second;
         flipSite(x, y);
     }
 
-    display();
+    //display();
 }
-/*
- *     rand_x, rand_y = np.random.randint(N), np.random.randint(N)
-    collection_set = set([(rand_x, rand_y)])
-    frontier = set([(rand_x, rand_y)])
-    #print(collection_set)
-    p = 1 - np.exp(-2*b*J)
 
-    while frontier:
-        new_frontier = set()
-        for point in frontier:
-            x,y = point[0], point[1]
-            site_spin = get_site_2d(lat, point)
-            point_neighbours = get_neighbours_2d(x,y,N)
-            for neighbour in point_neighbours:
-                if not neighbour:
-                    continue
-                neighbour_spin = get_site_2d(lat, neighbour)
-                if site_spin == neighbour_spin and neighbour not in collection_set:
-                    if np.random.uniform() < p:
-                        new_frontier.update([neighbour])
-                        collection_set.update([neighbour])
-        frontier = new_frontier
+std::vector<std::pair<int, int>> Lattice2D::getNeighbours(int x, int y) {
 
-    for site in collection_set:
-        flip_site_2d(lat, site)
-    #print(lat)
-    return lat
- * */
-std::vector<std::array<int, 2>> Lattice2D::getNeighbours(int x, int y) {
-
-    std::array<int, 2> x_plus = {GARBAGE, GARBAGE};
-    std::array<int, 2> y_plus = {GARBAGE, GARBAGE};
-    std::array<int, 2> x_minus = {GARBAGE, GARBAGE};
-    std::array<int, 2> y_minus = {GARBAGE, GARBAGE};
+    std::pair<int, int> x_plus = {GARBAGE, GARBAGE};
+    std::pair<int, int> y_plus = {GARBAGE, GARBAGE};
+    std::pair<int, int> x_minus = {GARBAGE, GARBAGE};
+    std::pair<int, int> y_minus = {GARBAGE, GARBAGE};
 
    if (x + 1 < _latSize) {
-       x_plus[0] = x + 1;
-       x_plus[1] = y;
+       x_plus.first = x + 1;
+       x_plus.second = y;
    } if (x - 1 >= 0) {
-       x_minus[0] = x - 1;
-       x_minus[1] = y;
+       x_minus.first = x - 1;
+       x_minus.second = y;
    } if (y + 1 < _latSize) {
-       y_plus[0] = x;
-       y_plus[1] = y + 1;
+       y_plus.first = x;
+       y_plus.second = y + 1;
    } if (y - 1 >= 0) {
-       y_minus[0] = x;
-       y_minus[1] = y - 1;
+       y_minus.first = x;
+       y_minus.second = y - 1;
    }
 
-   std::vector<std::array<int, 2>> neighbours;
+   std::vector<std::pair<int, int>> neighbours;
 
-   neighbours.push_back(x_plus);
-   neighbours.push_back(x_minus);
-   neighbours.push_back(y_plus);
-   neighbours.push_back(y_minus);
+   neighbours.emplace_back(x_plus);
+   neighbours.emplace_back(x_minus);
+   neighbours.emplace_back(y_plus);
+   neighbours.emplace_back(y_minus);
 
    return neighbours;
 }
 
-bool Lattice2D::isValidCoord(std::array<int, 2> coord) {
-    return coord[0] != GARBAGE && coord[1] != GARBAGE;
+bool Lattice2D::isValidCoord(std::pair<int, int> coord) {
+    return coord.first != GARBAGE && coord.second != GARBAGE;
+}
+
+double Lattice2D::magnetisation() {
+    int tot = 0;
+    for (int i = 0; i < _latSize; i++) {
+        for (int j = 0; j < _latSize; j++) {
+            tot += _lat[i][j];
+        }
+    }
+    return 1/pow(_latSize, 2) * abs(tot);
 }

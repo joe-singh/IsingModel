@@ -19,10 +19,14 @@ tuple
 -
 array
 -
+utility
+-
 
 /Users/joesingh/Desktop/Statmech/Project/Ising/main.cpp
 iostream
 -
 Lattice2D.h
 /Users/joesingh/Desktop/Statmech/Project/Ising/Lattice2D.h
+chrono
+-
 

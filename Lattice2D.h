@@ -19,6 +19,7 @@ public:
     bool isValidCoord(std::pair<int, int> coord);
     void Wolff(double J, double b) override;
     double magnetisation() override;
+    double susceptibility(double beta) override;
     std::vector<std::pair<int, int>> getNeighbours(int x, int y);
 };
 

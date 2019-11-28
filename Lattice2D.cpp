@@ -10,12 +10,18 @@
 #include <unordered_set>
 #include <cmath>
 #include <random>
+#include <stack>
 
 Lattice2D::Lattice2D(int latSize) : Lattice(latSize) {
 
    for (int i = 0; i < latSize; i++) {
-       std::vector<int> row (latSize, 1);
-       _lat.push_back(row);
+       std::vector<int> row;
+       for (int j = 0; j < latSize; j++) {
+           int spin = rand() % 2;
+           if (spin == 0) spin = -1;
+           row.emplace_back(spin);
+       }
+       _lat.emplace_back(row);
    }
 }
 
@@ -46,11 +52,65 @@ struct pair_hash {
     }
 };
 
+double randomNo() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> distr(0.0, 1.0);
+    double randomNum = distr(gen);
+    return randomNum;
+}
+
+/*
 void Lattice2D::Wolff(double J, double b) {
     srand(time(0));
     int randX = rand() % _latSize;
     int randY = rand() % _latSize;
-    std::array<int, 2> randomPoint = {randX, randY};
+
+
+    std::pair<int, int> randomPoint = {randX, randY};
+    int originalSpin = getSite(randX, randY);
+    double p = 1 - exp(-2*b*J);
+    double randomnum = randomNo();
+
+    if (randomnum < p) flipSite(randX, randY);
+    std::stack<std::pair<int, int>> cluster;
+    std::vector<std::pair<int, int>> seen;
+    cluster.push(randomPoint);
+    //seen.emplace_back(randomPoint);
+
+    while (!cluster.empty()) {
+        std::pair<int, int> currPoint = cluster.top();
+        cluster.pop();
+        int x = currPoint.first;
+        int y = currPoint.second;
+        seen.emplace_back(currPoint);
+        //int currSpin = getSite(x, y);
+        std::vector<std::pair<int, int>> neighbours = getNeighbours(x, y);
+
+
+
+        for (auto neighbour : neighbours) {
+            if (!isValidCoord(neighbour)) continue;
+            int neighbourX = neighbour.first;
+            int neighbourY = neighbour.second;
+            int neighbourSpin = getSite(neighbourX, neighbourY);
+
+            double randomNum = randomNo();
+            bool probabilityTest = randomNum < p;
+            bool alreadySeenPoint = std::find(seen.begin(), seen.end(), neighbour) != seen.end();
+            if (neighbourSpin == originalSpin && probabilityTest && !alreadySeenPoint) {
+                cluster.push(neighbour);
+                flipSite(neighbourX, neighbourY);
+            }
+        }
+    }
+}*/
+
+void Lattice2D::Wolff(double J, double b) {
+    srand(time(0));
+    int randX = rand() % _latSize;
+    int randY = rand() % _latSize;
+    std::pair<int, int> randomPoint = {randX, randY};
 
     std::unordered_set<std::pair<int, int>, pair_hash> cluster;
     //std::set<std::array<int, 2>> cluster;
@@ -110,18 +170,39 @@ std::vector<std::pair<int, int>> Lattice2D::getNeighbours(int x, int y) {
     std::pair<int, int> x_minus = {GARBAGE, GARBAGE};
     std::pair<int, int> y_minus = {GARBAGE, GARBAGE};
 
+
    if (x + 1 < _latSize) {
        x_plus.first = x + 1;
        x_plus.second = y;
-   } if (x - 1 >= 0) {
+   } else {
+       x_plus.first = 0;
+       x_plus.second = y;
+   }
+
+   if (x - 1 >= 0) {
        x_minus.first = x - 1;
        x_minus.second = y;
-   } if (y + 1 < _latSize) {
+   } else {
+       x_minus.first = _latSize-1;
+       x_minus.second = y;
+   }
+
+
+   if (y + 1 < _latSize) {
        y_plus.first = x;
        y_plus.second = y + 1;
-   } if (y - 1 >= 0) {
+   } else {
+       y_plus.first = x;
+       y_plus.second = 0;
+   }
+
+
+   if (y - 1 >= 0) {
        y_minus.first = x;
        y_minus.second = y - 1;
+   } else {
+       y_minus.first = x;
+       y_minus.second = _latSize-1;
    }
 
    std::vector<std::pair<int, int>> neighbours;
@@ -145,5 +226,18 @@ double Lattice2D::magnetisation() {
             tot += _lat[i][j];
         }
     }
-    return 1/pow(_latSize, 2) * abs(tot);
+    return abs(1/pow(_latSize, 2) * tot);
 }
+
+double Lattice2D::susceptibility(double beta) {
+    int m2 = 0;
+
+    for (int i = 0; i < _latSize; i++) {
+        for (int j = 0; j < _latSize; j++) {
+            m2 += pow(_lat[i][j], 2);
+        }
+    }
+    double m2avg = 1/pow(_latSize,2) * m2;
+    return beta * (m2avg - pow(magnetisation(), 2));
+}
+

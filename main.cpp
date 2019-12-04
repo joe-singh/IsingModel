@@ -10,29 +10,10 @@
 #include <algorithm>
 #include <functional>
 #include <unordered_map>
-#include <chrono>
-#include <numeric>
 
 int main() {
 
     auto start = std::chrono::high_resolution_clock::now();
-    /*Lattice2D* lat = new Lattice2D(10);
-    lat->display();
-    std::vector<double> magnetisations;
-    const int thermalisation = 100;
-
-    for (int i = 0; i <2; i++) {
-        lat->Wolff(1, 1/0.5);
-        //if (i > thermalisation) {
-        //    magnetisations.emplace_back(lat->magnetisation());
-        //}
-        lat->display();
-        std::cout << "-------------------------------\n";
-    }
-    lat->display();
-    std::cout << "-------------------------------\n";
-    std::cout << "Lattice Magnetisation = " << lat->magnetisation() << std::endl; //std::accumulate(magnetisations.begin(), magnetisations.end(), 0.0)/magnetisations.size() << std::endl;
-*/
 
     std::unordered_map<double, double> magnetisationData;
     std::unordered_map<double, double> m2Data;
@@ -60,12 +41,12 @@ int main() {
                     for(int i = bi; i <ei; i++) {
 
                         Lattice5D lat = Lattice5D(nlat);
-                        int latSize = pow(nlat, 2);
+
                         double temperature = i/100.0 + 8.0;
                         double magnetisationSum = 0.0;
-                        //double susceptibilitySum = 0.0;
+
                         double m2Sum = 0.0;
-                        //std::vector<double> tempStorage;
+
                         double energySum = 0.0;
                         double e2sum = 0.0;
 
@@ -89,9 +70,7 @@ int main() {
                                 magnetisationSum += M;
 
                                 m2Sum += M2;
-                                //double magnetisation = lat.magnetisation();
 
-                                //magnetisationSum += magnetisation;
 
                             }
                         }
@@ -101,14 +80,13 @@ int main() {
                         double avgE2 = e2sum / numAvg;
                         double C = (avgE2 - pow(avgE, 2)) * pow(beta, 2);
                         double avgMagnet = magnetisationSum / (n_iter - THERMAL);
-                        //double avgSuscept = susceptibilitySum / (n_iter - THERMAL);
+
                         double avgM2 = m2Sum / (n_iter - THERMAL);
                         double susceptibitlity = (avgM2 - pow(avgMagnet ,2)) * beta;
 
                         counter++;
                         susceptibilityData[temperature] = susceptibitlity;
-                        //magnetisationData[temperature] = avgMagnet;
-                        //m2Data[temperature] = avgM2;
+
                         heatCapData[temperature] = C;
                         std::cout << "Done temperature " << temperature << " Counter: " << counter << std::endl;
                     }
@@ -118,20 +96,7 @@ int main() {
     std::for_each(threads.begin(), threads.end(), [](std::thread& x){x.join();});
 
 
-    /*for (auto x : susceptibilityData) {
-        temperatures.emplace_back(x.first);
-        //magnetisations.emplace_back(x.second);
-        susceptibilities.emplace_back(x.second);
-    }
 
-    for (auto x : magnetisationData) {
-        //temperatures.emplace_back(x.first);
-        magnetisations.emplace_back(x.second);
-    }
-
-    for (auto x : m2Data) {
-        magnetisationSq.emplace_back(x.second);
-    }*/
 
     for (auto x : heatCapData) {
         temperatures.emplace_back(x.first);
@@ -155,10 +120,10 @@ int main() {
         std::cout << sus << ", ";
     }
 
-    //std::cout << "\n<M>\n\n";
-    //for (double m : magnetisations) {
-    //    std::cout << m << ", ";
-    //}
+    std::cout << "\n<M>\n\n";
+    for (double m : magnetisations) {
+        std::cout << m << ", ";
+    }
 
     auto stop = std::chrono::high_resolution_clock::now();
 

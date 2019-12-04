@@ -20,7 +20,10 @@ public:
     void Wolff(double J, double b) override;
     double magnetisation() override;
     double susceptibility(double beta) override;
+    double energy();
     std::vector<std::pair<int, int>> getNeighbours(int x, int y);
+    int M();
+    int M2();
 };
 
 

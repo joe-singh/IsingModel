@@ -52,60 +52,6 @@ struct pair_hash {
     }
 };
 
-double randomNo() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<> distr(0.0, 1.0);
-    double randomNum = distr(gen);
-    return randomNum;
-}
-
-/*
-void Lattice2D::Wolff(double J, double b) {
-    srand(time(0));
-    int randX = rand() % _latSize;
-    int randY = rand() % _latSize;
-
-
-    std::pair<int, int> randomPoint = {randX, randY};
-    int originalSpin = getSite(randX, randY);
-    double p = 1 - exp(-2*b*J);
-    double randomnum = randomNo();
-
-    if (randomnum < p) flipSite(randX, randY);
-    std::stack<std::pair<int, int>> cluster;
-    std::vector<std::pair<int, int>> seen;
-    cluster.push(randomPoint);
-    //seen.emplace_back(randomPoint);
-
-    while (!cluster.empty()) {
-        std::pair<int, int> currPoint = cluster.top();
-        cluster.pop();
-        int x = currPoint.first;
-        int y = currPoint.second;
-        seen.emplace_back(currPoint);
-        //int currSpin = getSite(x, y);
-        std::vector<std::pair<int, int>> neighbours = getNeighbours(x, y);
-
-
-
-        for (auto neighbour : neighbours) {
-            if (!isValidCoord(neighbour)) continue;
-            int neighbourX = neighbour.first;
-            int neighbourY = neighbour.second;
-            int neighbourSpin = getSite(neighbourX, neighbourY);
-
-            double randomNum = randomNo();
-            bool probabilityTest = randomNum < p;
-            bool alreadySeenPoint = std::find(seen.begin(), seen.end(), neighbour) != seen.end();
-            if (neighbourSpin == originalSpin && probabilityTest && !alreadySeenPoint) {
-                cluster.push(neighbour);
-                flipSite(neighbourX, neighbourY);
-            }
-        }
-    }
-}*/
-
 void Lattice2D::Wolff(double J, double b) {
     srand(time(0));
     int randX = rand() % _latSize;
@@ -219,25 +165,56 @@ bool Lattice2D::isValidCoord(std::pair<int, int> coord) {
     return coord.first != GARBAGE && coord.second != GARBAGE;
 }
 
-double Lattice2D::magnetisation() {
+int Lattice2D::M() {
     int tot = 0;
     for (int i = 0; i < _latSize; i++) {
         for (int j = 0; j < _latSize; j++) {
             tot += _lat[i][j];
         }
     }
-    return abs(1/pow(_latSize, 2) * tot);
+    return tot;
+}
+
+int Lattice2D::M2() {
+    return pow(M(), 2);
+}
+
+double Lattice2D::magnetisation() {
+    return abs(1/pow(_latSize, 2) * M());
 }
 
 double Lattice2D::susceptibility(double beta) {
     int m2 = 0;
-
-    for (int i = 0; i < _latSize; i++) {
+    // i, j = first particle. l, n = second particle
+    /*for (int i = 0; i < _latSize; i++) {
         for (int j = 0; j < _latSize; j++) {
-            m2 += pow(_lat[i][j], 2);
+            for (int l = 0; l < _latSize; l++) {
+                for (int n = 0; n < _latSize; n++) {
+                    int spin1 = getSite(i, j);
+                    int spin2 = getSite(l, n);
+                    m2 += spin1*spin2;
+                }
+            }
+        }
+    }*/
+    //int m2_square = pow(m2, 2);
+    double mag = magnetisation();
+    double m2avg = 1/pow(_latSize,2) * pow(mag, 2);
+    return beta * (m2avg - pow(mag, 2));
+}
+
+double Lattice2D::energy() {
+    double ene = 0;
+    for (int x = 0; x < _latSize; x++) {
+        for (int y = 0; y < _latSize; y++) {
+            int site = getSite(x, y);
+            std::vector<std::pair<int, int>> neighbours = getNeighbours(x, y);
+            for (auto neighbour : neighbours) {
+                int nb = getSite(neighbour.first, neighbour.second);
+                ene += -nb*site;
+            }
         }
     }
-    double m2avg = 1/pow(_latSize,2) * m2;
-    return beta * (m2avg - pow(magnetisation(), 2));
+    return ene/4.0;
 }
 
